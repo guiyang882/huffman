@@ -2,13 +2,49 @@ import os
 import sys
 import pickle
 import struct
-#from include.Node import Node
+from include.Node import Node
+
+class TreeNode:
+    def __init__(self,code=None,left=None,right=None):
+        self.code = code
+        self.left = left
+        self.right = right
+
+    def __str__(self):
+        return "Node code %s, left %s, right %s" % (str(self.code),str(self.left),str(self.right))
+
+class Tree:
+    def __init__(self):
+        self.root = TreeNode("")
+    
+    def is_empty(self):
+        if self.root.left == None and self.root.right == None:
+            return True
+        return False
+    
+    def insert(self,key,code):
+        for index in range(0,len(code)):
+            direct = code[index]
+            if direct == '0':
+                pass
+            if direct == '1':
+                pass
+
+def create_Huffman_tree(code_map):
+    info = code_map.items()
+    info.sort(key = lambda x:len(x[1]))
+    node_list = []
+    for item in info:
+        node_list.append(Node(1,item[0],item[1]))
 
 class decompress:
     def __init__(self,pickle_file,compressedfile,targetFile):
         handle = open(pickle_file,'rb')
         self.key_map = pickle.load(handle)
         handle.close()
+
+        create_Huffman_tree(self.key_map)
+
         #print self.key_map
         self.code_content = []
         #print compressedfile
@@ -54,11 +90,6 @@ class decompress:
         handle.write(self.str_content)
         handle.close()
         print "Decode Finished !"
-    
-    def test_json(self):
-        for key,code in self.key_map.items():
-            if key == '\xff\xff':
-                print key,code
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:
@@ -69,5 +100,4 @@ if __name__ == '__main__':
         print 'Path %s does not exist!'%sys.argv[1]
         sys.exit(0)
     obj = decompress("./result/key.pkl","./result/a.bin",sys.argv[2])
-    #obj.test_json()
-    obj.decode()
+    #obj.decode()
