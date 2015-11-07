@@ -139,14 +139,14 @@ class decompress:
 
     def tree_decode(self):
         page_content = ""
-        current = copy.deepcopy(self.root)
+        current = copy.copy(self.root)
         for index in range(0,len(self.decode_content)):
             if self.decode_content[index] == '0':
                 current = current.left
                 if current != None and current.key != None:
                     if current.key != '\xff\xff':
                         page_content = page_content + current.key
-                        current = copy.deepcopy(self.root)
+                        current = copy.copy(self.root)
                     if current.key == '\xff\xff':
                         break
                 if current == None:
@@ -158,7 +158,7 @@ class decompress:
                 if current != None and current.key != None:
                     if current.key != '\xff\xff':
                         page_content = page_content + current.key
-                        current = copy.deepcopy(self.root)
+                        current = copy.copy(self.root)
                     if current.key == '\xff\xff':
                         break
                 if current == None:
